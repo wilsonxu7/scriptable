@@ -187,14 +187,14 @@ async function renderLockscreenWidget() {
 
 
         // 处理温度范围显示
-        const weatheRangeStack = widget.addStack();
+        const weatherRangeStack = widget.addStack();
         // weatherStack.layoutHorizontally()
         weatherRangeStack.centerAlignContent();
         // weatherStack.addSpacer()
 
         // 温度范围
         if (weatherDescValue.length < 3) {
-            weatheRangeStack.addSpacer(6);
+            weatherRangeStack.addSpacer(6);
             let thermometerIcon = "thermometer.medium";
             if (weatherInfo.maxTemperature > 30) {
                 thermometerIcon = "thermometer.high";
@@ -204,11 +204,11 @@ async function renderLockscreenWidget() {
                 thermometerIcon = "thermometer.low";
             }
             const tRangeIcon = getSFSymbol(thermometerIcon);
-            let tRangeIconWidget = weatheRangeStack.addImage(tRangeIcon);
+            let tRangeIconWidget = weatherRangeStack.addImage(tRangeIcon);
             tRangeIconWidget.imageSize = new Size(12, 12);
             tRangeIconWidget.tintColor = new Color("ffffff", 0.8);
-            weatheRangeStack.addSpacer(2);
-            let aqiTextWidget = weatheRangeStack.addText(
+            weatherRangeStack.addSpacer(2);
+            let aqiTextWidget = weatherRangeStack.addText(
                 `${weatherInfo.minTemperature}~${weatherInfo.maxTemperature}`
             );
             aqiTextWidget.font = Font.semiboldRoundedSystemFont(10);
@@ -217,7 +217,7 @@ async function renderLockscreenWidget() {
 
         // 天气 END
         //////////////////////////
-        weatheRangeStack.addSpacer();
+        weatherRangeStack.addSpacer();
         widget.addSpacer(8);
 
         //////////////////////////
