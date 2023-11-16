@@ -194,7 +194,7 @@ async function renderLockscreenWidget() {
 
         // 温度范围
         if (weatherDescValue.length < 3) {
-            weatherRangeStack.addSpacer(6);
+            // weatherRangeStack.addSpacer(6);
             let thermometerIcon = "thermometer.medium";
             if (weatherInfo.maxTemperature > 30) {
                 thermometerIcon = "thermometer.high";
@@ -205,7 +205,7 @@ async function renderLockscreenWidget() {
             }
             const tRangeIcon = getSFSymbol(thermometerIcon);
             let tRangeIconWidget = weatherRangeStack.addImage(tRangeIcon);
-            tRangeIconWidget.imageSize = new Size(12, 12);
+            tRangeIconWidget.imageSize = new Size(18, 18);
             tRangeIconWidget.tintColor = new Color("ffffff", 0.8);
             weatherRangeStack.addSpacer(2);
             let aqiTextWidget = weatherRangeStack.addText(
@@ -221,7 +221,7 @@ async function renderLockscreenWidget() {
         widget.addSpacer(8);
 
         //////////////////////////
-        // AQI 日出 日落
+        // AQI 
         const otherWeatherStack = widget.addStack();
         otherWeatherStack.centerAlignContent();
 
@@ -245,44 +245,52 @@ async function renderLockscreenWidget() {
 
         const aqiTextElement = otherWeatherStack.addText(`${weatherInfo.aqiValue}`);
         aqiTextElement.lineLimit = 1;
-        aqiTextElement.font = Font.boldRoundedSystemFont(10);
+        aqiTextElement.font = Font.boldRoundedSystemFont(12);
         aqiTextElement.textColor = new Color("ffffff", 0.8);
+        weatherRangeStack.addSpacer();
+        widget.addSpacer(8);
 
+
+        //处理日出日落
+        const sunRiseSetStack = widget.addStack();
+        // weatherStack.layoutHorizontally()
+        sunRiseSetStack.centerAlignContent();
+        
         // 日出ico
-        otherWeatherStack.addSpacer(8);
+        sunRiseSetStack.addSpacer(8);
 
         sunriseImg = SFSymbol.named("sunrise.fill").image;
-        const sunriseImageElement = otherWeatherStack.addImage(sunriseImg)
-        sunriseImageElement.imageSize = new Size(14, 14);
+        const sunriseImageElement = sunRiseSetStack.addImage(sunriseImg)
+        sunriseImageElement.imageSize = new Size(18, 18);
         let sunriseTintColor = new Color("ffffff", 0.8);
         sunriseImageElement.tintColor = sunriseTintColor;
 
         //
-        otherWeatherStack.addSpacer(4);
+        sunRiseSetStack.addSpacer(4);
 
-        const sunriseTextElement = otherWeatherStack.addText(`${weatherInfo.sunrise}`);
+        const sunriseTextElement = sunRiseSetStack.addText(`${weatherInfo.sunrise}`);
         sunriseTextElement.lineLimit = 1;
-        sunriseTextElement.font = Font.boldRoundedSystemFont(10);
+        sunriseTextElement.font = Font.boldRoundedSystemFont(12);
         sunriseTextElement.textColor = new Color("ffffff", 0.8);
 
 
         // 日落ico
-        otherWeatherStack.addSpacer(6);
+        sunRiseSetStack.addSpacer(6);
         sunsetImg = SFSymbol.named("sunset.fill").image;
-        const sunsetImageElement = otherWeatherStack.addImage(sunsetImg)
-        sunsetImageElement.imageSize = new Size(14, 14);
+        const sunsetImageElement = sunRiseSetStack.addImage(sunsetImg)
+        sunsetImageElement.imageSize = new Size(18, 18);
         let sunsetTintColor = new Color("ffffff", 0.8);
         sunsetImageElement.tintColor = sunsetTintColor;
 
         //
-        otherWeatherStack.addSpacer(4);
+        sunRiseSetStack.addSpacer(4);
 
-        const sunsetTextElement = otherWeatherStack.addText(`${weatherInfo.sunset}`);
+        const sunsetTextElement = sunRiseSetStack.addText(`${weatherInfo.sunset}`);
         sunsetTextElement.lineLimit = 1;
-        sunsetTextElement.font = Font.boldRoundedSystemFont(10);
+        sunsetTextElement.font = Font.boldRoundedSystemFont(12);
         sunsetTextElement.textColor = new Color("ffffff", 0.8);
 
-        otherWeatherStack.addSpacer();
+        sunRiseSetStack.addSpacer();
     } else {
         const errStack = widget.addStack()
         errStack.layoutVertically()
