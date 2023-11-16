@@ -211,19 +211,19 @@ async function renderLockscreenWidget() {
             let aqiTextWidget = weatherRangeStack.addText(
                 `${weatherInfo.minTemperature}~${weatherInfo.maxTemperature}`
             );
-            aqiTextWidget.font = Font.semiboldRoundedSystemFont(10);
+            aqiTextWidget.font = Font.semiboldRoundedSystemFont(12);
             aqiTextWidget.textColor = new Color("ffffff", 0.8);
         }
 
         // 天气 END
         //////////////////////////
         weatherRangeStack.addSpacer();
-        widget.addSpacer(8);
+        // widget.addSpacer(8);
 
         //////////////////////////
         // AQI 
-        const otherWeatherStack = widget.addStack();
-        otherWeatherStack.centerAlignContent();
+        // const otherWeatherStack = widget.addStack();
+        // otherWeatherStack.centerAlignContent();
 
         // AQI
         let aqiIcon = "aqi.medium";
@@ -235,15 +235,15 @@ async function renderLockscreenWidget() {
             aqiIcon = "aqi.high";
         }
         aqiImg = SFSymbol.named(aqiIcon).image;
-        const aqiImageElement = otherWeatherStack.addImage(aqiImg);
+        const aqiImageElement = weatherRangeStack.addImage(aqiImg);
         aqiImageElement.imageSize = new Size(12, 12);
         let aqiTintColor = new Color("ffffff", 0.9);
         aqiImageElement.tintColor = aqiTintColor;
 
         //
-        otherWeatherStack.addSpacer(4);
+        weatherRangeStack.addSpacer(4);
 
-        const aqiTextElement = otherWeatherStack.addText(`${weatherInfo.aqiValue}`);
+        const aqiTextElement = weatherRangeStack.addText(`${weatherInfo.aqiValue}`);
         aqiTextElement.lineLimit = 1;
         aqiTextElement.font = Font.boldRoundedSystemFont(12);
         aqiTextElement.textColor = new Color("ffffff", 0.8);
@@ -270,7 +270,7 @@ async function renderLockscreenWidget() {
 
         const sunriseTextElement = sunRiseSetStack.addText(`${weatherInfo.sunrise}`);
         sunriseTextElement.lineLimit = 1;
-        sunriseTextElement.font = Font.boldRoundedSystemFont(12);
+        sunriseTextElement.font = Font.boldRoundedSystemFont(10);
         sunriseTextElement.textColor = new Color("ffffff", 0.8);
 
 
@@ -287,7 +287,7 @@ async function renderLockscreenWidget() {
 
         const sunsetTextElement = sunRiseSetStack.addText(`${weatherInfo.sunset}`);
         sunsetTextElement.lineLimit = 1;
-        sunsetTextElement.font = Font.boldRoundedSystemFont(12);
+        sunsetTextElement.font = Font.boldRoundedSystemFont(10);
         sunsetTextElement.textColor = new Color("ffffff", 0.8);
 
         sunRiseSetStack.addSpacer();
