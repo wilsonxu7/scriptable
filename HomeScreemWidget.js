@@ -12,6 +12,8 @@
 const ImageMode = true
 // 1：图片加蒙板 2：unsplash壁纸  3：Bing 壁纸
 const Imgstyle = 1
+// 仅当选项为Unsplash有效 即Imgstyle = 2
+const IMAGE_SEARCH_TERMS = "nature,wather"
 
 const calendar = calendarFunc();
 const fmLocal = FileManager.local();
