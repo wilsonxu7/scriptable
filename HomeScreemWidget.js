@@ -98,8 +98,9 @@ async function renderLockscreenWidget() {
             }
         }
     }
+    
     const dateInfo = calendar.solar2lunar();
-
+    console.log(`当前时间：`,dateInfo.solarDate);
     //////////////////////////
     // 农历
     const lunarCalendarStack = widget.addStack();
