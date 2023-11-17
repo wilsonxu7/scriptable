@@ -14,6 +14,11 @@ const ImageMode = true
 const Imgstyle = 1
 // 仅当选项为Unsplash有效 即Imgstyle = 2
 const IMAGE_SEARCH_TERMS = "nature,wather"
+// 高斯样式：light/dark
+const blurStyle = "dark"
+// 模糊程度 参数范围 1~150
+const blursize = 100
+
 
 const calendar = calendarFunc();
 const fmLocal = FileManager.local();
