@@ -89,18 +89,21 @@ if (ImageMode) {
     switch (Imgstyle) {
         case 1:
             const blugImgs = await getImageByUrl("https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS, `_${Script.name()}-bg`, false)
+            console.log(`blugImgs: ${blugImgs}`)
             bgImg = await blurImage(blugImgs, blurStyle, blursize)
             widget.backgroundImage = bgImg
             break;
         case 2:
             const unsplashurl = "https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS
             const orginImgs = await getImageByUrl(unsplashurl, `_${Script.name()}-orginImgs-bg`, false)
+            console.log(`orginImgs: ${orginImgs}`)
             bgImg = await shadowImage(orginImgs)
             widget.backgroundImage = bgImg
             break;
         case 3:
             const bingurl = "https://api.dujin.org/bing/1366.php"
             const bingImgs = await getImageByUrl(bingurl, `_${Script.name()}-bingImgs-bg`, false)
+            console.log(`orginImgs: ${orginImgs}`)
             bgImg = await shadowImage(bingImgs)
             widget.backgroundImage = bgImg
             break;
