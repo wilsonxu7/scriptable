@@ -8,6 +8,11 @@
 // calendar.js from https://github.com/jjonline/calendar.js
 // const { calendar } = importModule('calendar.js');
 
+// 选择true时，使用必应壁纸  
+const ImageMode = true
+// 1：图片加蒙板 2：unsplash壁纸  3：Bing 壁纸
+const Imgstyle = 1
+
 const calendar = calendarFunc();
 const fmLocal = FileManager.local();
 const _config = {
@@ -78,6 +83,28 @@ const _config = {
     },
 };
 
+if (ImageMode) {
+    switch (Imgstyle) {
+        case 1:
+            const blugImgs = await getImageByUrl("https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS, `_${Script.name()}-bg`, false)
+            bgImg = await blurImage(blugImgs, blurStyle, blursize)
+            widget.backgroundImage = bgImg
+            break;
+        case 2:
+            const unsplashurl = "https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS
+            const orginImgs = await getImageByUrl(unsplashurl, `_${Script.name()}-orginImgs-bg`, false)
+            bgImg = await shadowImage(orginImgs)
+            widget.backgroundImage = bgImg
+            break;
+        case 3:
+            const bingurl = "https://api.dujin.org/bing/1366.php"
+            const bingImgs = await getImageByUrl(bingurl, `_${Script.name()}-bingImgs-bg`, false)
+            bgImg = await shadowImage(bingImgs)
+            widget.backgroundImage = bgImg
+            break;
+    }
+}
+
 let widget = await renderLockscreenWidget()
 Script.setWidget(widget);
 Script.complete();
@@ -98,9 +125,9 @@ async function renderLockscreenWidget() {
             }
         }
     }
-    
+
     const dateInfo = calendar.solar2lunar();
-    console.log(`当前时间：`,dateInfo.solarDate);
+    console.log(`当前时间：`, dateInfo.solarDate);
     //////////////////////////
     // 农历
     const lunarCalendarStack = widget.addStack();
