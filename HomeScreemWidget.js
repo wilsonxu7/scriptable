@@ -206,13 +206,13 @@ async function renderLockscreenWidget() {
             const tRangeIcon = getSFSymbol(thermometerIcon);
             let tRangeIconWidget = weatherRangeStack.addImage(tRangeIcon);
             tRangeIconWidget.imageSize = new Size(18, 18);
-            tRangeIconWidget.tintColor = new Color("ffffff", 0.8);
+            // tRangeIconWidget.tintColor = new Color("ffffff", 0.8);
             weatherRangeStack.addSpacer(2);
             let aqiTextWidget = weatherRangeStack.addText(
                 `${weatherInfo.minTemperature}~${weatherInfo.maxTemperature}`
             );
             aqiTextWidget.font = Font.semiboldRoundedSystemFont(12);
-            aqiTextWidget.textColor = new Color("ffffff", 0.8);
+            // aqiTextWidget.textColor = new Color("ffffff", 0.8);
         }
 
         // 天气 END
@@ -237,8 +237,8 @@ async function renderLockscreenWidget() {
         aqiImg = SFSymbol.named(aqiIcon).image;
         const aqiImageElement = weatherRangeStack.addImage(aqiImg);
         aqiImageElement.imageSize = new Size(18, 18);
-        let aqiTintColor = new Color("ffffff", 0.9);
-        aqiImageElement.tintColor = aqiTintColor;
+        // let aqiTintColor = new Color("ffffff", 0.9);
+        // aqiImageElement.tintColor = aqiTintColor;
 
         //
         weatherRangeStack.addSpacer(4);
@@ -246,7 +246,7 @@ async function renderLockscreenWidget() {
         const aqiTextElement = weatherRangeStack.addText(`${weatherInfo.aqiValue}`);
         aqiTextElement.lineLimit = 1;
         aqiTextElement.font = Font.boldRoundedSystemFont(12);
-        aqiTextElement.textColor = new Color("ffffff", 0.8);
+        // aqiTextElement.textColor = new Color("ffffff", 0.8);
         weatherRangeStack.addSpacer();
         widget.addSpacer(8);
 
@@ -255,15 +255,15 @@ async function renderLockscreenWidget() {
         const sunRiseSetStack = widget.addStack();
         // weatherStack.layoutHorizontally()
         sunRiseSetStack.centerAlignContent();
-        
+
         // 日出ico
         // sunRiseSetStack.addSpacer(8);
 
         sunriseImg = SFSymbol.named("sunrise.fill").image;
         const sunriseImageElement = sunRiseSetStack.addImage(sunriseImg)
         sunriseImageElement.imageSize = new Size(18, 18);
-        let sunriseTintColor = new Color("ffffff", 0.8);
-        sunriseImageElement.tintColor = sunriseTintColor;
+        // let sunriseTintColor = new Color("ffffff", 0.8);
+        // sunriseImageElement.tintColor = sunriseTintColor;
 
         //
         sunRiseSetStack.addSpacer(4);
@@ -271,7 +271,7 @@ async function renderLockscreenWidget() {
         const sunriseTextElement = sunRiseSetStack.addText(`${weatherInfo.sunrise}`);
         sunriseTextElement.lineLimit = 1;
         sunriseTextElement.font = Font.boldRoundedSystemFont(11);
-        sunriseTextElement.textColor = new Color("ffffff", 0.8);
+        // sunriseTextElement.textColor = new Color("ffffff", 0.8);
 
 
         // 日落ico
@@ -279,8 +279,8 @@ async function renderLockscreenWidget() {
         sunsetImg = SFSymbol.named("sunset.fill").image;
         const sunsetImageElement = sunRiseSetStack.addImage(sunsetImg)
         sunsetImageElement.imageSize = new Size(18, 18);
-        let sunsetTintColor = new Color("ffffff", 0.8);
-        sunsetImageElement.tintColor = sunsetTintColor;
+        // let sunsetTintColor = new Color("ffffff", 0.8);
+        // sunsetImageElement.tintColor = sunsetTintColor;
 
         //
         sunRiseSetStack.addSpacer(4);
@@ -288,7 +288,7 @@ async function renderLockscreenWidget() {
         const sunsetTextElement = sunRiseSetStack.addText(`${weatherInfo.sunset}`);
         sunsetTextElement.lineLimit = 1;
         sunsetTextElement.font = Font.boldRoundedSystemFont(11);
-        sunsetTextElement.textColor = new Color("ffffff", 0.8);
+        // sunsetTextElement.textColor = new Color("ffffff", 0.8);
 
         sunRiseSetStack.addSpacer();
     } else {
