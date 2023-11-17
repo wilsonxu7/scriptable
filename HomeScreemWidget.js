@@ -299,7 +299,7 @@ async function renderLockscreenWidget() {
 
     //////////////////////////
     // 公历
-    console.log(`当前时间: ${dateInfo.date}`);
+    console.log(`当前时间: ${dateInfo}`);
     const solarCalendarStack = widget.addStack();
     // weatherStack.layoutHorizontally()
     solarCalendarStack.centerAlignContent();
@@ -317,6 +317,8 @@ async function renderLockscreenWidget() {
     let solarCalendarDescWidget = solarCalendarStack.addText(`${solarCalendarDescValue}`);
     solarCalendarDescWidget.font = Font.blackSystemFont(12);
 
+    solarCalendarStack.addSpacer();
+    widget.addSpacer(8);
 
 
     // 农历
