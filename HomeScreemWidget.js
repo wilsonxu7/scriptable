@@ -303,7 +303,7 @@ async function renderLockscreenWidget() {
     const solarCalendarStack = widget.addStack();
     // weatherStack.layoutHorizontally()
     solarCalendarStack.centerAlignContent();
-    solarCalendarStack.addSpacer(1);
+    solarCalendarStack.addSpacer(3);
     // solarCalendarStack.addSpacer()
     // 公历图标
     // const weatherIcon = getSFSymbol(
