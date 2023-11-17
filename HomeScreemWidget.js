@@ -13,7 +13,7 @@ const changePicBg = false
 // 选择true时，使用必应壁纸  
 const ImageMode = true
 // 预览大小  small/medium/large
-const previewSize = (config.runsInWidget ? config.widgetFamily : "medium");
+const previewSize = (config.runsInWidget ? config.widgetFamily : "small");
 // 是否使用纯色背景
 const colorMode = false
 // 小组件背景色
@@ -283,7 +283,7 @@ async function renderLockscreenWidget() {
     //   widget.refreshAfterDate = new Date(Date.now() + 60 * 5 * 1000);  // 设置刷新时间为30秒后
     widget.useDefaultPadding();
     let weatherInfo = await getWeather();
-    console.log('weatherInfo', weatherInfo)
+    console.log(`weatherInfo: ${weatherInfo}`)
     if (!weatherInfo || !weatherInfo.temperature) {
         for (let retries = 0; retries < 5; retries++) {
             weatherInfo = await getWeather(true);
@@ -299,7 +299,7 @@ async function renderLockscreenWidget() {
 
     //////////////////////////
     // 公历
-    console.log(`当前时间：`, dateInfo.solarDate);
+    console.log(`当前时间: ${dateInfo.date}`);
     const solarCalendarStack = widget.addStack();
     // weatherStack.layoutHorizontally()
     solarCalendarStack.centerAlignContent();
@@ -313,7 +313,7 @@ async function renderLockscreenWidget() {
     // weatherIconWidget.centerAlignImage();
 
     // solarCalendarStack.addSpacer(6);
-    let solarCalendarDescValue = dateInfo.solarDate;
+    let solarCalendarDescValue = dateInfo.date;
     let solarCalendarDescWidget = solarCalendarStack.addText(`${solarCalendarDescValue}`);
     solarCalendarDescWidget.font = Font.blackSystemFont(12);
 
