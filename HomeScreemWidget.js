@@ -299,14 +299,11 @@ async function renderLockscreenWidget() {
 
     //////////////////////////
     // 公历
-    console.log(`cYear: ${dateInfo.cYear}  ; cMonth: ${dateInfo.cMonth}  ;cDay: ${dateInfo.cDay}  ；`);
-    console.log(`gzYear: ${dateInfo.gzYear}  ; gzMonth: ${dateInfo.gzMonth}  ;gzDay: ${dateInfo.gzDay}  ；`);
-    console.log(`isToday: ${dateInfo.isToday}  ; isLeap: ${dateInfo.isLeap}  ;isTerm: ${dateInfo.isTerm}  ；`);
-    console.log(`nWeek: ${dateInfo.nWeek}  ; ncWeek: ${dateInfo.ncWeek}  ;Term: ${dateInfo.Term}  ；`);
+    console.log(`dateInfo: ${JSON.stringify(dateInfo)}`);
     const solarCalendarStack = widget.addStack();
     // weatherStack.layoutHorizontally()
     solarCalendarStack.centerAlignContent();
-    solarCalendarStack.addSpacer();
+    solarCalendarStack.addSpacer(1);
     // solarCalendarStack.addSpacer()
     // 公历图标
     // const weatherIcon = getSFSymbol(
@@ -318,7 +315,7 @@ async function renderLockscreenWidget() {
 
     // solarCalendarStack.addSpacer(6);
     let solarCalendarDescValue = dateInfo.date;
-    let solarCalendarDescWidget = solarCalendarStack.addText(`${solarCalendarDescValue}`);
+    let solarCalendarDescWidget = solarCalendarStack.addText(`${solarCalendarDescValue}  ${dateInfo.ncWeek}`);
     solarCalendarDescWidget.font = Font.blackSystemFont(12);
 
     solarCalendarStack.addSpacer();
