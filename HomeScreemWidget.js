@@ -19,6 +19,8 @@ const blurStyle = "dark"
 // 模糊程度 参数范围 1~150
 const blursize = 100
 
+const filename = `${Script.name()}.jpg`
+
 
 const calendar = calendarFunc();
 const fmLocal = FileManager.local();
