@@ -108,7 +108,7 @@ const _config = {
 
 //#####################背景模块-START#####################
 
-const widget = await createWidget()
+let widget = await renderLockscreenWidget()
 //#####################背景模块-START#####################
 
 if (!colorMode && !ImageMode && !config.runsInWidget && changePicBg) {
@@ -280,7 +280,7 @@ Script.complete()
 
 ///////////////////////////////////////////
 
-let widget = await renderLockscreenWidget()
+
 Script.setWidget(widget);
 Script.complete();
 
