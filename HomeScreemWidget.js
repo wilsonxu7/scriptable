@@ -8,16 +8,32 @@
 // calendar.js from https://github.com/jjonline/calendar.js
 // const { calendar } = importModule('calendar.js');
 
+// 选择true时，使用透明背景
+const changePicBg = false
 // 选择true时，使用必应壁纸  
 const ImageMode = true
-// 1：图片加蒙板 2：unsplash壁纸  3：Bing 壁纸
-const Imgstyle = 1
-// 仅当选项为Unsplash有效 即Imgstyle = 2
-const IMAGE_SEARCH_TERMS = "nature,wather"
+// 预览大小  small/medium/large
+const previewSize = (config.runsInWidget ? config.widgetFamily : "medium");
+// 是否使用纯色背景
+const colorMode = false
+// 小组件背景色
+const bgColor = new Color('#223A70', 1)
 // 高斯样式：light/dark
 const blurStyle = "dark"
 // 模糊程度 参数范围 1~150
 const blursize = 100
+// 1：图片加蒙板 2：unsplash壁纸  3：Bing 壁纸
+const Imgstyle = 1
+// 仅当选项为Unsplash有效 即Imgstyle = 2
+const IMAGE_SEARCH_TERMS = "nature,wather"
+// 在此处输入你喜欢的NBA球队的缩写。 具体配置 详见公众号内推文---曰坛
+const MY_NBA_TEAM = "GSW"; 
+// 当前季节的开始年份
+// 对于2020-21赛季，该值必须为“ 2020”
+// 对于2021-22赛季，该值必须为“ 2021”
+const CURRENT_SEASON_START_YEAR = "2023";
+// 上下左右间距
+ const padding = { top: 10, left: 10, bottom: 10, right: 10 }
 
 
 const calendar = calendarFunc();
@@ -90,30 +106,179 @@ const _config = {
     },
 };
 
-if (ImageMode) {
+//#####################背景模块-START#####################
+
+const widget = await createWidget()
+//#####################背景模块-START#####################
+
+if (!colorMode && !ImageMode && !config.runsInWidget && changePicBg) {
+
+
+    const okTips = "您的小部件背景已准备就绪"
+    let message = "开始之前，请回到主屏幕并进入编辑模式。 滑到最右边的空白页并截图。"
+    let options = ["图片选择", "透明背景", "配置文档", "取消"]
+    let response = await generateAlert(message, options)
+    if (response == 3) return
+    if (response == 0) {
+        let img = await Photos.fromLibrary()
+        message = okTips
+        const resultOptions = ["好的"]
+        await generateAlert(message, resultOptions)
+        files.writeImage(path, img)
+    }
+    if (response == 2) {
+        Safari.openInApp(versionData['ONE-NBA'].wxurl, false);
+    }
+    if (response == 1) {
+        message = "以下是【透明背景】生成步骤，如果你没有屏幕截图请退出，并返回主屏幕长按进入编辑模式。滑动到最右边的空白页截图。然后重新运行！"
+        let exitOptions = ["继续(已有截图)", "退出(没有截图)"]
+
+        let shouldExit = await generateAlert(message, exitOptions)
+        if (shouldExit) return
+
+        // Get screenshot and determine phone size.
+        let img = await Photos.fromLibrary()
+        let height = img.size.height
+        let phone = phoneSizes()[height]
+        if (!phone) {
+            message = "您似乎选择了非iPhone屏幕截图的图像，或者不支持您的iPhone。请使用其他图像再试一次!"
+            await generateAlert(message, ["好的！我现在去截图"])
+            return
+        }
+        if (height == 2436) {
+            let files = FileManager.local()
+            let cacheName = "nk-phone-type"
+            let cachePath = files.joinPath(files.libraryDirectory(), cacheName)
+            if (files.fileExists(cachePath)) {
+                let typeString = files.readString(cachePath)
+                phone = phone[typeString]
+            } else {
+                message = "你使用什么型号的iPhone？"
+                let types = ["iPhone 12 mini", "iPhone 11 Pro, XS, or X"]
+                let typeIndex = await generateAlert(message, types)
+                let type = (typeIndex == 0) ? "mini" : "x"
+                phone = phone[type]
+                files.writeString(cachePath, type)
+            }
+        }
+        // Prompt for widget size and position.
+        message = "您想要创建什么尺寸的小部件？"
+        let sizes = ["小号", "中号", "大号"]
+        let size = await generateAlert(message, sizes)
+        let widgetSize = sizes[size]
+
+        message = "您想它在什么位置？"
+        message += (height == 1136 ? " (请注意，您的设备仅支持两行小部件，因此中间和底部选项相同。)" : "")
+
+        // Determine image crop based on phone size.
+        let crop = {
+            w: "",
+            h: "",
+            x: "",
+            y: ""
+        }
+        if (widgetSize == "小号") {
+            crop.w = phone.小号
+            crop.h = phone.小号
+            let positions = ["顶部 左边", "顶部 右边", "中间 左边", "中间 右边", "底部 左边", "底部 右边"]
+            let position = await generateAlert(message, positions)
+
+            // Convert the two words into two keys for the phone size dictionary.
+            let keys = positions[position].split(' ')
+            crop.y = phone[keys[0]]
+            crop.x = phone[keys[1]]
+
+        } else if (widgetSize == "中号") {
+            crop.w = phone.中号
+            crop.h = phone.小号
+
+            // 中号 and 大号 widgets have a fixed x-value.
+            crop.x = phone.左边
+            let positions = ["顶部", "中间", "底部"]
+            let position = await generateAlert(message, positions)
+            let key = positions[position].toLowerCase()
+            crop.y = phone[key]
+
+        } else if (widgetSize == "大号") {
+            crop.w = phone.中号
+            crop.h = phone.大号
+            crop.x = phone.左边
+            let positions = ["顶部", "底部"]
+            let position = await generateAlert(message, positions)
+
+            // 大号 widgets at the 底部 have the "中间" y-value.
+            crop.y = position ? phone.中间 : phone.顶部
+        }
+
+        // Crop image and finalize the widget.
+        let imgCrop = cropImage(img, new Rect(crop.x, crop.y, crop.w, crop.h))
+
+        message = "您的小部件背景已准备就绪，退出到桌面预览。"
+        const resultOptions = ["导出到相册", "预览组件"]
+        const exportToFiles = await generateAlert(message, resultOptions)
+        if (exportToFiles) {
+            files.writeImage(path, imgCrop)
+        } else {
+            Photos.save(imgCrop)
+        }
+    }
+
+}
+
+//#####################背景模块-设置小组件的背景#####################
+
+if (colorMode) {
+    widget.backgroundColor = bgColor
+} else if (ImageMode) {
     switch (Imgstyle) {
         case 1:
             const blugImgs = await getImageByUrl("https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS, `_${Script.name()}-bg`, false)
-            console.log(`blugImgs: ${blugImgs}`)
             bgImg = await blurImage(blugImgs, blurStyle, blursize)
             widget.backgroundImage = bgImg
             break;
         case 2:
             const unsplashurl = "https://source.unsplash.com/random/800x373?" + IMAGE_SEARCH_TERMS
             const orginImgs = await getImageByUrl(unsplashurl, `_${Script.name()}-orginImgs-bg`, false)
-            console.log(`orginImgs: ${orginImgs}`)
+
             bgImg = await shadowImage(orginImgs)
             widget.backgroundImage = bgImg
             break;
         case 3:
             const bingurl = "https://api.dujin.org/bing/1366.php"
             const bingImgs = await getImageByUrl(bingurl, `_${Script.name()}-bingImgs-bg`, false)
-            console.log(`orginImgs: ${orginImgs}`)
             bgImg = await shadowImage(bingImgs)
             widget.backgroundImage = bgImg
             break;
     }
+
+
 }
+else {
+    widget.backgroundImage = files.readImage(path)
+}
+// 设置边距(上，左，下，右)
+widget.setPadding(padding.top, padding.left, padding.bottom, padding.right)
+// 设置组件
+if (!config.runsInWidget) {
+    switch (previewSize) {
+        case "small":
+            await widget.presentSmall();
+            break;
+        case "medium":
+            await widget.presentMedium();
+            break;
+        case "large":
+            await widget.presentLarge();
+            break;
+    }
+}
+Script.setWidget(widget)
+// 完成脚本
+Script.complete()
+// 预览
+
+
+///////////////////////////////////////////
 
 let widget = await renderLockscreenWidget()
 Script.setWidget(widget);
@@ -1981,30 +2146,30 @@ async function blurImage(img, style, blur = blursize) {
          // Return a base64 representation.
          canvas.toDataURL(); 
          `
-  
+
     // Convert the images and create the HTML.
     let blurImgData = Data.fromPNG(img).toBase64String()
     let html = `
          <img id="blurImg" src="data:image/png;base64,${blurImgData}" />
          <canvas id="mainCanvas" />
          `
-  
+
     // Make the web view and get its return value.
     let view = new WebView()
     await view.loadHTML(html)
     let returnValue = await view.evaluateJavaScript(js)
-  
+
     // Remove the data type from the string and convert to data.
     let imageDataString = returnValue.slice(22)
     let imageData = Data.fromBase64String(imageDataString)
-  
+
     // Convert to image and crop before returning.
     let imageFromData = Image.fromData(imageData)
     // return cropImage(imageFromData)
     return imageFromData
-  }
+}
 
-  async function shadowImage(img) {
+async function shadowImage(img) {
     let ctx = new DrawContext()
     // 把画布的尺寸设置成图片的尺寸
     ctx.size = img.size
@@ -2014,8 +2179,7 @@ async function blurImage(img, style, blur = blursize) {
     ctx.setFillColor(new Color('#000000', 0.5))
     // 绘制图层
     ctx.fillRect(new Rect(0, 0, img.size['width'], img.size['height']))
-  
+
     // 导出最终图片
     return await ctx.getImage()
-  }
-  
+}
