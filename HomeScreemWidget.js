@@ -299,11 +299,15 @@ async function renderLockscreenWidget() {
 
     //////////////////////////
     // 公历
-    console.log(`当前时间: ${dateInfo}`);
+    console.log(`cYear: ${dateInfo.cYear}  ; cMonth: ${dateInfo.cMonth}  ;cDay: ${dateInfo.cDay}  ；`);
+    console.log(`gzYear: ${dateInfo.gzYear}  ; gzMonth: ${dateInfo.gzMonth}  ;gzDay: ${dateInfo.gzDay}  ；`);
+    console.log(`isToday: ${dateInfo.isToday}  ; isLeap: ${dateInfo.isLeap}  ;isTerm: ${dateInfo.isTerm}  ；`);
+    console.log(`nWeek: ${dateInfo.nWeek}  ; ncWeek: ${dateInfo.ncWeek}  ;Term: ${dateInfo.Term}  ；`);
     const solarCalendarStack = widget.addStack();
     // weatherStack.layoutHorizontally()
     solarCalendarStack.centerAlignContent();
-    // weatherStack.addSpacer()
+    solarCalendarStack.addSpacer();
+    // solarCalendarStack.addSpacer()
     // 公历图标
     // const weatherIcon = getSFSymbol(
     //     _config.weatherSFIcos[weatherInfo.weatherIco]
