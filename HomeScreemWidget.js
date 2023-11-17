@@ -23,17 +23,11 @@ const blurStyle = "dark"
 // 模糊程度 参数范围 1~150
 const blursize = 100
 // 1：图片加蒙板 2：unsplash壁纸  3：Bing 壁纸
-const Imgstyle = 1
+const Imgstyle = 3
 // 仅当选项为Unsplash有效 即Imgstyle = 2
 const IMAGE_SEARCH_TERMS = "nature,wather"
-// 在此处输入你喜欢的NBA球队的缩写。 具体配置 详见公众号内推文---曰坛
-const MY_NBA_TEAM = "GSW"; 
-// 当前季节的开始年份
-// 对于2020-21赛季，该值必须为“ 2020”
-// 对于2021-22赛季，该值必须为“ 2021”
-const CURRENT_SEASON_START_YEAR = "2023";
 // 上下左右间距
- const padding = { top: 10, left: 10, bottom: 10, right: 10 }
+const padding = { top: 10, left: 10, bottom: 10, right: 10 }
 
 
 const calendar = calendarFunc();
@@ -302,8 +296,29 @@ async function renderLockscreenWidget() {
     }
 
     const dateInfo = calendar.solar2lunar();
-    console.log(`当前时间：`, dateInfo.solarDate);
+
     //////////////////////////
+    // 公历
+    console.log(`当前时间：`, dateInfo.solarDate);
+    const solarCalendarStack = widget.addStack();
+    // weatherStack.layoutHorizontally()
+    solarCalendarStack.centerAlignContent();
+    // weatherStack.addSpacer()
+    // 公历图标
+    // const weatherIcon = getSFSymbol(
+    //     _config.weatherSFIcos[weatherInfo.weatherIco]
+    // );
+    // let weatherIconWidget = solarCalendarStack.addImage(weatherIcon);
+    // weatherIconWidget.imageSize = new Size(18, 18);
+    // weatherIconWidget.centerAlignImage();
+
+    // solarCalendarStack.addSpacer(6);
+    let solarCalendarDescValue = dateInfo.solarDate;
+    let solarCalendarDescWidget = solarCalendarStack.addText(`${solarCalendarDescValue}`);
+    solarCalendarDescWidget.font = Font.blackSystemFont(12);
+
+
+
     // 农历
     const lunarCalendarStack = widget.addStack();
     lunarCalendarStack.centerAlignContent();
